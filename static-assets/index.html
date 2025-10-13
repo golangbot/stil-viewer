@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STL File Viewer</title>
+    <script src="/stl_viewer.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #fileInput {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        #stl_cont {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>STL File Viewer</h2>
+    <input type="file" id="fileInput" accept=".stl" />
+    <div id="stl_cont"></div>
+
+    <script>
+        // Initialize STL viewer
+        {{/* var stl_viewer = new StlViewer(
+            document.getElementById("stl_cont"), 
+            { 
+                models: [] // Start with empty models
+            }
+        ); */}}
+
+        // Handle file selection
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Create object URL for the selected file
+                const fileUrl = URL.createObjectURL(file);
+                
+                // Clear previous models and add the new one
+               // stl_viewer.remove_all_models();
+                {{/* stl_viewer.add_model({
+                    id: 0,
+                    filename: fileUrl
+                }); */}}
+
+                var stl_viewer=new StlViewer(document.getElementById("stl_cont"), { models: [ {id:0, filename:fileUrl} ] });
+            }
+        });
+    </script>
+</body>
+</html>
