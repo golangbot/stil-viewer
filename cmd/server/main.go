@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/golangbot/stl-viewer/openscadmodel"
 	"github.com/gorilla/mux"
 )
 
@@ -15,7 +16,18 @@ func main() {
 	webServer()
 }
 
+//	func initializeModels() {
+//		openScadModels = []openscadmodel.OpenScadModel{
+//			{Name: "cylinderhole", File: "cylinderhole"},
+//		}
+//	}
 func webServer() {
+	openScadModel := openscadmodel.OpenScadModel{Name: "cylinderhole", File: "cylinderhole"}
+	if _, err := openScadModel.GenerateStl(); err != nil {
+		slog.Error("unable to generate stl file", "error", err)
+		os.Exit(1)
+	}
+
 	r := mux.NewRouter()
 	mime.AddExtensionType(".xml", "text/xml; charset=utf-8")
 
