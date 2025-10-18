@@ -1,11 +1,13 @@
 // Main model - rectangular base with through hole and rounded edges
+cube_length = 10; // Default value
+
 module main_model() {
-    // Base rectangular pad with rounded edges (10mm wide, 6mm tall, 10mm high)
+    // Base rectangular pad with rounded edges
     difference() {
         // Create base with rounded edges using minkowski
         minkowski() {
-            translate([0, 0, 4.5])  // Adjusted for minkowski offset
-            cube([9, 5, 9], center=true);  // Reduced size to account for rounding
+            translate([0, 0, cube_length/2 - 0.5])  // Adjusted for minkowski offset
+            cube([cube_length - 1, 5, cube_length - 1], center=true);  // Reduced size to account for rounding
             
             sphere(0.5, $fn=32);
         }

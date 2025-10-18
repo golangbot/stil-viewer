@@ -29,7 +29,10 @@
     <h2>STL File Viewer</h2>
     <input type="file" id="fileInput" accept=".stl" />
     <div id="stl_cont"></div>
-
+    <form id="userinput-form" action="/sphere" method="POST">
+    <input type="text" id="userinput" name="userinput" placeholder="Enter your cube creation query" style="font-size: 16px; padding: 8px; width: 300px;" />
+    <button type="submit">Submit</button>
+    </form>
     <script>
         // Initialize STL viewer
         {{/* var stl_viewer = new StlViewer(
@@ -38,12 +41,22 @@
                 models: [] // Start with empty models
             }
         ); */}}
-
+        
         // Handle file selection
         document.getElementById('fileInput').addEventListener('change', function(event) {
+                        document.getElementById("stl_cont").innerHTML = '';
+                        
+var stl_viewer = new StlViewer(
+            document.getElementById("stl_cont"),
+            {
+                models: [] // Start with empty models
+            }
+        );
             const file = event.target.files[0];
             if (file) {
                 // Create object URL for the selected file
+                
+
                 const fileUrl = URL.createObjectURL(file);
                 
                 // Clear previous models and add the new one
@@ -53,7 +66,12 @@
                     filename: fileUrl
                 }); */}}
 
-                var stl_viewer=new StlViewer(document.getElementById("stl_cont"), { models: [ {id:0, filename:fileUrl} ] });
+                //var stl_viewer=new StlViewer(document.getElementById("stl_cont"), { models: [ {id:0, filename:fileUrl} ] });
+               // stl_viewer.clean();
+                stl_viewer.add_model({
+                    id: 0,
+                    filename: fileUrl
+                });
             }
         });
     </script>
