@@ -79,8 +79,13 @@ func (u sphereHandler) processUserInput(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "invalid radius from user input, please try again", http.StatusBadRequest)
 		return
 	}
-	openScadModel := openscadmodel.OpenScadModel{Name: "cylinderhole", File: "cylinderhole"}
-	if _, err := openScadModel.GenerateStl(radius); err != nil {
+	// openScadModel := openscadmodel.OpenScadModel{Name: "cylinderhole", File: "cylinderhole"}
+	// if _, err := openScadModel.GenerateStl(radius); err != nil {
+	// 	slog.Error("unable to generate stl file", "error", err)
+	// 	os.Exit(1)
+	// }
+	freeCadModel := openscadmodel.FreeCadModel{Name: "sphere", File: "sphere"}
+	if _, err := freeCadModel.GenerateStl(radius); err != nil {
 		slog.Error("unable to generate stl file", "error", err)
 		os.Exit(1)
 	}

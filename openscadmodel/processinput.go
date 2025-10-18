@@ -43,9 +43,9 @@ func CallOpenAI(ctx context.Context, userInput string) (string, error) {
 		Input: []openAIInput{
 			{
 				Role: "developer",
-				Content: `I have a openscad model function which takes a cube length as parameter. 
-				Process the users input and give me the cube length. For example, if the user says 
-				I want to draw a cube with length 10, then return 10. Return only the length as I am going to pass this as parameter
+				Content: `I have a freecad python function which takes a chamfer size as parameter. 
+				Process the users input and give me the chamfer size. For example, if the user says 
+				I want to draw a chamfer with size 10, then return 10. Return only the length as I am going to pass this as parameter
 				 to the function. If the user follows up and says, change the length to 1. Then return only 1 as the output. 
 				 If the length is invalid, return NA`,
 			},
