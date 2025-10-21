@@ -5,6 +5,8 @@ import (
 	"net"
 	"os"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 type FreeCadModel struct {
@@ -27,7 +29,9 @@ func (s FreeCadModel) GenerateStl(champferSize string) (string, error) {
 		return "", err
 	}
 	model = []byte(strings.ReplaceAll(string(model), "chamfer.Size = 1.0", "chamfer.Size = "+champferSize))
-	servAddr := "localhost:38721"
+	stlFileName := uuid.New().String()
+	model = []byte(strings.ReplaceAll(string(model), "STL_FILE_NAME", stlFileName))
+	servAddr := "localhost:38059"
 	tcpAddr, err := net.ResolveTCPAddr("tcp", servAddr)
 	if err != nil {
 		println("ResolveTCPAddr failed:", err.Error())
@@ -59,5 +63,5 @@ func (s FreeCadModel) GenerateStl(champferSize string) (string, error) {
 	println("reply from server=", string(reply))
 
 	conn.Close()
-	return "", nil
+	return stlFileName, nil
 }

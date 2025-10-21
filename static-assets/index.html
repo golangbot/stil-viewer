@@ -29,10 +29,12 @@
     <h2>STL File Viewer</h2>
     <input type="file" id="fileInput" accept=".stl" />
     <div id="stl_cont"></div>
-    <form id="userinput-form" action="/sphere" method="POST">
+    <!--<form id="userinput-form" action="/sphere" method="POST">-->
     <input type="text" id="userinput" name="userinput" placeholder="Enter your cube creation query" style="font-size: 16px; padding: 8px; width: 300px;" />
-    <button type="submit">Submit</button>
-    </form>
+    <button type="submit" id="submitButton">Submit</button>
+    <!--</form>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <script>
         // Initialize STL viewer
         {{/* var stl_viewer = new StlViewer(
@@ -46,7 +48,7 @@
         document.getElementById('fileInput').addEventListener('change', function(event) {
                         document.getElementById("stl_cont").innerHTML = '';
                         
-var stl_viewer = new StlViewer(
+        var stl_viewer = new StlViewer(
             document.getElementById("stl_cont"),
             {
                 models: [] // Start with empty models
@@ -73,6 +75,50 @@ var stl_viewer = new StlViewer(
                     filename: fileUrl
                 });
             }
+        });
+
+        $(document).ready(function() {
+            $("#submitButton").click(function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var userInput = $("#userinput").val();
+
+                $.ajax({
+                    url: "/sphere",
+                    type: "POST",
+                    data: { userinput: userInput },
+                    dataType: "json", // Expect JSON response
+                    success: function(response) {
+                        // Handle the successful response from the server
+                        console.log("Response:", response);
+
+                        // Assuming the server returns a JSON object with an "stlfile" property
+                        var stlFile = response.stl_file;
+
+                        // Update the STL viewer with the new model
+                        if (stlFile) {
+                            document.getElementById("stl_cont").innerHTML = '';
+                            var stl_viewer = new StlViewer(
+                                document.getElementById("stl_cont"),
+                                {
+                                    models: [] // Start with empty models
+                                }
+                            );
+                            stl_viewer.add_model({
+                                id: 0,
+                                filename: stlFile  // Use the stlFile from the response
+                            });
+                        } else {
+                            alert("STL file not found in the response.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error("Error:", status, error);
+                        alert("Error submitting request. Please try again.");
+                    }
+                });
+            });
         });
     </script>
 </body>

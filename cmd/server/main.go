@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log/slog"
 	"mime"
 	"net"
@@ -18,6 +19,10 @@ func main() {
 }
 
 type sphereHandler struct {
+}
+
+type sphereResponse struct {
+	StlFile string `json:"stl_file"`
 }
 
 func webServer() {
@@ -85,9 +90,20 @@ func (u sphereHandler) processUserInput(w http.ResponseWriter, r *http.Request) 
 	// 	os.Exit(1)
 	// }
 	freeCadModel := openscadmodel.FreeCadModel{Name: "sphere", File: "sphere"}
-	if _, err := freeCadModel.GenerateStl(radius); err != nil {
+	fileName, err := freeCadModel.GenerateStl(radius)
+	if err != nil {
 		slog.Error("unable to generate stl file", "error", err)
 		os.Exit(1)
 	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	stlFileName := fileName + ".stl"
+	// http.Redirect(w, r, "/"+stlFileName, http.StatusSeeOther)
+	slog.Info("Generated STL file", "stlfile", stlFileName)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	jsonResponse := sphereResponse{StlFile: stlFileName}
+	if err := json.NewEncoder(w).Encode(jsonResponse); err != nil {
+		slog.Error("unable to encode sphere response", "error", err)
+		http.Error(w, "unable to process request, please try again", http.StatusInternalServerError)
+		return
+	}
 }

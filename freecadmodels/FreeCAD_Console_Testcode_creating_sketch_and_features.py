@@ -338,10 +338,10 @@ __objs__ = []
 __objs__.append(FreeCAD.getDocument("Unnamed").getObject("Body"))
 import Mesh
 if hasattr(Mesh, "exportOptions"):
-    options = Mesh.exportOptions(u"/home/naveen/Desktop/Unnamed-Body.stl")
-    Mesh.export(__objs__, u"/home/naveen/Desktop/Unnamed-Body.stl", options)
+    options = Mesh.exportOptions(u"/home/naveen/Documents/source-code/free-cad-ai/stl-viewer/static-assets/STL_FILE_NAME.stl")
+    Mesh.export(__objs__, u"/home/naveen/Documents/source-code/free-cad-ai/stl-viewer/static-assets/STL_FILE_NAME.stl", options)
 else:
-    Mesh.export(__objs__, u"/home/naveen/Desktop/Unnamed-Body.stl")
+    Mesh.export(__objs__, u"/home/naveen/Documents/source-code/free-cad-ai/stl-viewer/static-assets/STL_FILE_NAME.stl")
 
 del __objs__
 ### End command Std_Export
